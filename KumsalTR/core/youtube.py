@@ -36,12 +36,9 @@ class YouTube:
             for file in os.listdir(self.cookie_dir):
                 if file.endswith(".txt"):
                     path = os.path.join(self.cookie_dir, file)
-                    try:
-                        with open(path, "r", encoding="utf-8", errors="ignore") as f:
-                            content = f.read(512)
-                            if "# Netscape" in content or "youtube.com" in content:
-                                self.cookies.append(path)
-                    except: pass
+                    # Normalize on load to ensure compatibility
+                    if self.normalize_cookie_file(path):
+                        self.cookies.append(path)
             self.checked = True
         return self.cookies
 
@@ -60,10 +57,12 @@ class YouTube:
                 if not line or line.startswith("#"):
                     continue
                 
-                parts = line.split()
+                # Split by any whitespace, but at most 6 times to keep the 7th field (Value) intact
+                parts = line.split(None, 6)
                 if len(parts) >= 7:
                     lines.append("\t".join(parts[:7]))
             
+            # Write with explicit tabs and LF
             with open(path, "w", encoding="utf-8", newline="\n") as fw:
                 fw.write("\n".join(lines) + "\n")
             return True
@@ -287,12 +286,15 @@ class YouTube:
                 if "403" in err or "429" in err:
                     continue
                 if "sign in to confirm" in err:
-                    if cookie and cookie in self.cookies:
-                        logger.error(f"Invalid cookie removed: {os.path.basename(cookie)}")
-                        try:
-                            self.cookies.remove(cookie)
-                            os.remove(cookie)
-                        except: pass
+                    if cookie:
+                        logger.error(f"YouTube block detected for cookie: {os.path.basename(cookie)}")
+                        if cookie in self.cookies:
+                            try:
+                                self.cookies.remove(cookie)
+                                os.remove(cookie)
+                            except: pass
+                    else:
+                        logger.error("YouTube block detected (No cookie used)")
                     continue
         return None
 
