@@ -138,7 +138,10 @@ class MongoDB:
             num = doc["num"] if doc else await self.set_assistant(chat_id)
             self.assistant[chat_id] = num
 
-        return anon.clients[self.assistant[chat_id] - 1]
+        try:
+            return anon.clients[self.assistant[chat_id] - 1]
+        except (IndexError, KeyError):
+            return None
 
     async def get_client(self, chat_id: int):
         if chat_id not in self.assistant:
