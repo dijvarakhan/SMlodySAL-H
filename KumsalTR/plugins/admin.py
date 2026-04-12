@@ -52,6 +52,9 @@ async def update_cookie(_, m: types.Message):
         path = os.path.join(yt.cookie_dir, doc.file_name)
         await m.reply_to_message.download(file_name=path)
         
+        # Formatı düzelt
+        yt.normalize_cookie_file(path)
+        
         # YouTube core'u tetikle
         yt.checked = False
         yt.cookies = []
@@ -96,3 +99,4 @@ async def clear_cache_cmd(_, m: types.Message):
         except:
             continue
     await m.reply_text(f"<b>🧹 {count} ᴀᴅᴇᴛ ᴏ̈ɴʙᴇʟʟᴇᴋ ᴅᴏsʏᴀsɪ ᴛᴇᴍɪᴢʟᴇɴᴅɪ.</b>")
+
