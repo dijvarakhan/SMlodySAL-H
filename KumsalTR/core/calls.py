@@ -21,11 +21,15 @@ class TgCall(PyTgCalls):
 
     async def pause(self, chat_id: int) -> bool:
         client = await db.get_assistant(chat_id)
+        if not client:
+            return False
         await db.playing(chat_id, paused=True)
         return await client.pause(chat_id)
 
     async def resume(self, chat_id: int) -> bool:
         client = await db.get_assistant(chat_id)
+        if not client:
+            return False
         await db.playing(chat_id, paused=False)
         return await client.resume(chat_id)
 
@@ -37,10 +41,11 @@ class TgCall(PyTgCalls):
         except:
             pass
 
-        try:
-            await client.leave_call(chat_id, close=False)
-        except:
-            pass
+        if client:
+            try:
+                await client.leave_call(chat_id, close=False)
+            except:
+                pass
 
     async def play_media(
         self,
@@ -51,6 +56,9 @@ class TgCall(PyTgCalls):
     ) -> None:
         client = await db.get_assistant(chat_id)
         _lang = await lang.get_lang(chat_id)
+
+        if not client:
+            return await message.edit_text("<b>❌ Hᴀᴛᴀ:</b> Asɪsᴛᴀɴʟᴀʀ ʜᴇɴᴜ̈ᴢ ʜᴀᴢɪʀ ᴅᴇɢɪʟ. Lᴜ̈ᴛғᴇɴ ʙɪʀᴀᴢ ʙᴇᴋʟᴇʏɪɴ.")
 
         if not media.file_path:
             await message.edit_text(_lang["error_no_file"].format(config.SUPPORT_CHAT))
@@ -202,3 +210,4 @@ class TgCall(PyTgCalls):
             self.clients.append(client)
             await self.decorators(client)
         logger.info("PyTgCalls client(s) started without thumbnails.")
+
