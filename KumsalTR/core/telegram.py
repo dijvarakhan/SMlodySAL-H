@@ -42,11 +42,11 @@ class Telegram:
         video = bool(getattr(media, "mime_type", "").startswith("video/"))
 
         if duration > config.DURATION_LIMIT:
-            await utils.safe_edit(sent, lang.get("play_duration_limit", "Song too long").format(config.DURATION_LIMIT // 60))
+            await sent.edit_text(lang.get("play_duration_limit", "Song too long").format(config.DURATION_LIMIT // 60))
             return None
 
-        if file_size > 2048 * 1024 * 1024:
-            await utils.safe_edit(sent, lang.get("dl_limit", "File too large"))
+        if file_size > 2000 * 1024 * 1024:
+            await sent.edit_text(lang.get("dl_limit", "File too large"))
             return None
 
         async def progress(current, total):
@@ -69,15 +69,15 @@ class Telegram:
                 eta,
             )
 
-            await utils.safe_edit(
-                sent, text, reply_markup=buttons.cancel_dl(lang.get("cancel", "Cancel"))
+            await sent.edit_text(
+                text, reply_markup=buttons.cancel_dl(lang.get("cancel", "Cancel"))
             )
 
         try:
             file_path = f"downloads/{file_id}.{file_ext}"
             if not os.path.exists(file_path):
                 if file_id in self.active:
-                    await utils.safe_edit(sent, lang.get("dl_active", "Download already active"))
+                    await sent.edit_text(lang.get("dl_active", "Download already active"))
                     return None
 
                 self.active.append(file_id)
@@ -88,8 +88,8 @@ class Telegram:
                 await task
                 self.active.remove(file_id)
                 self.active_tasks.pop(msg_id, None)
-                await utils.safe_edit(
-                    sent, lang.get("dl_complete", "Download complete").format(round(time.time() - start_time, 2))
+                await sent.edit_text(
+                    lang.get("dl_complete", "Download complete").format(round(time.time() - start_time, 2))
                 )
 
             return Media(
