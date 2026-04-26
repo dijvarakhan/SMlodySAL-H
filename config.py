@@ -19,7 +19,7 @@ class Config:
         self.QUEUE_LIMIT = int(getenv("QUEUE_LIMIT", 50))
         self.PLAYLIST_LIMIT = int(getenv("PLAYLIST_LIMIT", 20))
 
-        self.SESSION1 = getenv("SESSION", "AQJe4noASc1jC6efUb9EDt5hdi8zPAasBC43_05WT9Y51RMlfLKh2TGtIviYHRmX4a6XkNH_DMNkamhRd2KTaHZ-IyXX7hkzSpy_nq-Sgk93aDJOmlBelLGJs34VkydVrgluJ-ATIsUFDIEvyl3tVwCFVVA9aBxA3UpP7-8CjtFI0CFOtWQqmh1m0Ik7KhxFja82dpeICTNtBP_7gqv232-cX4WoqWGxykpHm3RINIuo2RY6IDfsq7adNu3CbroJn7vR-skW63mx11gl7FrJaHEwD0_kb2HebJnwgYmL8p61-NkQZWbn6d3kigfs3WIl8hl27sWDN3E9l_IxLhy4LxiQkMzMRgAAAAHacLhZAA")
+        self.SESSION1 = getenv("SESSION", "AQJe4noAD512sn3dHvEtwC8yQZOe2wXQ9swzDqE2pofVt8BnTNCAYhKWKe2NEHmDIsYVOlmnMOZhOPC-o1h8WT7ev6B5Fqsa5wDBhtyXW8HSpdmIgFdR0vvQISFrPXNrG05u4TEBcnMCPkBPL0xB7f2CnJID-aDb32ewGnIgsAFAfsx8etTxQRkYeNz2g7BfZ-VADC4HNxENAUKvLiwX7_bp-WWxfClbjarx4R-v4sNHnw702kUuKrndjC1qZPbwZ3qndpNAEPECqbKwsU75TL-NHuaiGsGavAb6ov3AScdSFktiVi4zkhLCY-Whc9icfETkGMUBiyRbL7madsia2qlvip5ttQAAAAHacLhZAA")
         self.SESSION2 = getenv("SESSION2", None)
         self.SESSION3 = getenv("SESSION3", None)
 
